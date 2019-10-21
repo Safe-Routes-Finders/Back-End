@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.lambdaschool</groupId>
-    <artifactId>bookstore</artifactId>
+    <artifactId>srbackend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>bookstore</name>
-    <description>Derek Etman Sprint JavaFramework</description>
+    <name>srbackend</name>
+    <description>Derek Etman - Backend for Safer Roads, Oct 21st Build week.</description>
 
     <properties>
         <java.version>11</java.version>
@@ -158,7 +158,7 @@
 
     <build>
 <!--        <finalName>${project.artifactId}</finalName>-->
-        <finalName>detman-bookstore</finalName>
+        <finalName>detman-srbackend</finalName>
 
         <plugins>
             <plugin>
