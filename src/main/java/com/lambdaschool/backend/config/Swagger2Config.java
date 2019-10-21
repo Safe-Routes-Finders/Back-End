@@ -1,7 +1,6 @@
 package com.lambdaschool.backend.config;
 
 import com.fasterxml.classmate.TypeResolver;
-import com.lambdaschool.backend.models.APIOpenLibrary;
 import com.lambdaschool.backend.models.ErrorDetail;
 import com.lambdaschool.backend.models.TokenModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,16 +40,15 @@ public class Swagger2Config
                                                       .ignoredParameterTypes(Pageable.class) // allows only my paging parameter list
                                                       .apiInfo(apiEndPointsInfo())
                                                       .pathMapping("/")
-                                                      .additionalModels(resolver.resolve(APIOpenLibrary.class),
-                                                                        resolver.resolve(TokenModel.class),
+                                                      .additionalModels(resolver.resolve(TokenModel.class),
                                                                         resolver.resolve(ErrorDetail.class))
                                                       .ignoredParameterTypes(SimpleGrantedAuthority.class);
     }
 
     private ApiInfo apiEndPointsInfo()
     {
-        return new ApiInfoBuilder().title("Java Spring Back End Starting Project")
-                                   .description("Last Java BE Sprint")
+        return new ApiInfoBuilder().title("Java Spring Back End for Safe Roads")
+                                   .description("Backend for Safe Roads, Oct 21st Build week.")
                                    .contact(new Contact("Derek Etman",
                                                         "http://www.lambdaschool.com",
                                                         "dereketman@gmail.com"))

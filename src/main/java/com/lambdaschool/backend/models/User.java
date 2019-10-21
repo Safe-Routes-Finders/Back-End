@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lambdaschool.backend.logging.Loggable;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -15,22 +17,27 @@ import java.util.List;
 // User is considered the parent entity
 
 @Loggable
+@ApiModel(value = "user", description = "User Entity")
 @Entity
 @Table(name = "users")
 public class User extends Auditable
 {
+    @ApiModelProperty(name = "userid", value = "Primary User ID", required = true, example = "2")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long userid;
 
+    @ApiModelProperty(name = "username", value = "User Name", example = "Julian")
     @Column(nullable = false,
             unique = true)
     private String username;
 
+    @ApiModelProperty(name = "password", value = "User Password")
     @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @ApiModelProperty(name = "primaryemail", value = "User email", example = "user@email.com")
     @Column(nullable = false,
             unique = true)
     @Email
