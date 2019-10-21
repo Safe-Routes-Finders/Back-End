@@ -2,10 +2,12 @@ package com.lambdaschool.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.lambdaschool.backend.logging.Loggable;
+import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 
+@ApiModel(value = "UserEmail", description = "UserEmail Entity")
 @Loggable
 @Entity
 @Table(name = "useremails",

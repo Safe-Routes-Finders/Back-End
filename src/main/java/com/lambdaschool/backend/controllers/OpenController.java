@@ -41,11 +41,11 @@ public class OpenController
     // Just create the user
     // http://localhost:2019/createnewuser?access=false
     //
-    // {
-    //     "username" : "Mojo",
-    //     "password" : "corgie",
-    //     "primaryemail" : "home@local.house"
-    // }
+//     {
+//         "username" : "Mojo",
+//         "password" : "corgie",
+//         "primaryemail" : "home@local.house"
+//     }
 
     @PostMapping(value = "/createnewuser",
                  consumes = {"application/json"},
