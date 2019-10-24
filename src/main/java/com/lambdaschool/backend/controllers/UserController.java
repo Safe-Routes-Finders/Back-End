@@ -1,11 +1,10 @@
 package com.lambdaschool.backend.controllers;
 
 import com.lambdaschool.backend.logging.Loggable;
+import com.lambdaschool.backend.models.ErrorDetail;
 import com.lambdaschool.backend.models.User;
 import com.lambdaschool.backend.services.UserService;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ public class UserController
 
     // http://localhost:2019/users/users/?page=1&size=1
     // http://localhost:2019/users/users/?sort=username,desc&sort=<field>,asc
-    @ApiOperation(value = "returns all Users",
+    @ApiOperation(value = "Returns all Users, Pageable : 5 Users per page.",
                   response = User.class,
                   responseContainer = "List")
     @ApiImplicitParams({@ApiImplicitParam(name = "page",
@@ -51,6 +50,8 @@ public class UserController
                                                                                                                                                                            dataType = "string",
                                                                                                                                                                            paramType = "query",
                                                                                                                                                                            value = "Sorting criteria in the format: property(,asc|desc). " + "Default sort order is ascending. " + "Multiple sort criteria are supported.")})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Success! Returning All Users, 5 will be displayed per " +
+            "page", response = User.class)})
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping(value = "/users",
                 produces = {"application/json"})
@@ -67,6 +68,10 @@ public class UserController
                                     HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Returns all Users, Non pageable.",
+            response = User.class,
+            responseContainer = "List")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Success! Returning All Users", response = User.class)})
     // http://localhost:2019/users/users/all
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping(value = "/users/all",
@@ -83,6 +88,12 @@ public class UserController
 
 
     // http://localhost:2019/users/user/7
+    @ApiOperation(value = "Finds a user by Id.", response = void.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User Found!", response = void.class),
+            @ApiResponse(code = 404, message = "User Not Found", response = ErrorDetail.class)
+    } )
+
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping(value = "/user/{userId}",
                 produces = {"application/json"})
@@ -99,6 +110,13 @@ public class UserController
     }
 
     // http://localhost:2019/users/user/name/cinnamon
+
+    @ApiOperation(value = "Finds a user by Name.", response = void.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User Found!", response = void.class),
+            @ApiResponse(code = 404, message = "User Not Found", response = ErrorDetail.class)
+    } )
+
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping(value = "/user/name/{userName}",
                 produces = {"application/json"})
@@ -115,7 +133,7 @@ public class UserController
     }
 
     // http://localhost:2019/users/user/name/like/da?sort=username
-    @ApiOperation(value = "returns all Users with names containing a given string",
+    @ApiOperation(value = "Returns all Users with names containing a given string.",
                   response = User.class,
                   responseContainer = "List")
     @ApiImplicitParams({@ApiImplicitParam(name = "page",
@@ -129,6 +147,10 @@ public class UserController
                                                                                                                                                                            dataType = "string",
                                                                                                                                                                            paramType = "query",
                                                                                                                                                                            value = "Sorting criteria in the format: property(,asc|desc). " + "Default sort order is ascending. " + "Multiple sort criteria are supported.")})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Found Users", response = void.class)
+    } )
+
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping(value = "/user/name/like/{userName}",
                 produces = {"application/json"})
@@ -149,6 +171,13 @@ public class UserController
     }
 
     // http://localhost:2019/users/getusername
+    @ApiOperation(value = "Returns the current user's name.",
+            response = User.class,
+            responseContainer = "List")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Your Name is", response = void.class)
+    } )
+
     @GetMapping(value = "/getusername",
                 produces = {"application/json"})
     @ResponseBody
@@ -163,6 +192,14 @@ public class UserController
     }
 
     // http://localhost:2019/users/getuserinfo
+
+    @ApiOperation(value = "Returns the current users info.",
+            response = User.class,
+            responseContainer = "List")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Returning your info", response = void.class)
+    } )
+
     @GetMapping(value = "/getuserinfo",
                 produces = {"application/json"})
     public ResponseEntity<?> getCurrentUserInfo(HttpServletRequest request,
@@ -178,21 +215,29 @@ public class UserController
 
     // http://localhost:2019/users/user
     //        {
-    //            "username": "Mojo",
-    //            "primaryemail": "mojo@lambdaschool.local",
-    //            "password" : "Coffee123",
-    //            "useremails": [
-    //            {
-    //                "useremail": "mojo@mymail.local"
-    //            },
-    //            {
-    //                "useremail": "mojo@mymail.local"
-    //            },
-    //            {
-    //                "useremail": "mojo@email.local"
-    //            }
-    //        ]
-    //        }
+//                "username": "Mojo",
+//                "primaryemail": "mojo@lambdaschool.local",
+//                "password" : "Coffee123",
+//                "useremails": [
+//                {
+//                    "useremail": "mojo@mymail.local"
+//                },
+//                {
+//                    "useremail": "mojo@mymail.local"
+//                },
+//                {
+//                    "useremail": "mojo@email.local"
+//                }
+//            ]
+//            }
+
+    @ApiOperation(value = "Adds New User.", notes = "Creates New User."
+            , response = void.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "User Created Successfully", response = void.class),
+            @ApiResponse(code = 500, message = "Error creating User", response = ErrorDetail.class)
+    } )
+
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping(value = "/user",
                  consumes = {"application/json"},
@@ -238,6 +283,14 @@ public class UserController
 //            }
 //        ]
 //        }
+
+    @ApiOperation(value = "Updates a User by Id.", response = void.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "User Updated!", response = void.class),
+            @ApiResponse(code = 404, message = "User Not Found", response = ErrorDetail.class),
+            @ApiResponse(code = 500, message = "Error updating User", response = ErrorDetail.class)
+    } )
+
     @PutMapping(value = "/user/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> updateUser(HttpServletRequest request,
@@ -257,6 +310,14 @@ public class UserController
 
 
     // http://localhost:2019/users/user/14
+
+    @ApiOperation(value = "Deletes a User by Id.", response = void.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "User Deleted!", response = void.class),
+            @ApiResponse(code = 404, message = "User Not Found", response = ErrorDetail.class),
+            @ApiResponse(code = 500, message = "Error Deleting User", response = ErrorDetail.class)
+    } )
+
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/user/{id}")
     public ResponseEntity<?> deleteUserById(HttpServletRequest request,
@@ -271,6 +332,14 @@ public class UserController
     }
 
     // http://localhost:2019/users/user/15/role/2
+
+    @ApiOperation(value = "Deletes user access permission based on User ID and Role ID.", response = void.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Deleted Access Permissions!", response = void.class),
+            @ApiResponse(code = 404, message = "User not Found / Role not found", response = ErrorDetail.class),
+            @ApiResponse(code = 500, message = "Error changing User access permission", response = ErrorDetail.class)
+    } )
+
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/user/{userid}/role/{roleid}")
     public ResponseEntity<?> deleteUserRoleByIds(HttpServletRequest request,
@@ -290,6 +359,16 @@ public class UserController
 
 
     // http://localhost:2019/users/user/15/role/2
+
+    @ApiOperation(value = "Adds user access permission based on User ID and Role ID.", notes = "Only Admin's are " +
+            "can grant other users admin access." , response =
+            void.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Created User Access Permissions!", response = void.class),
+            @ApiResponse(code = 404, message = "User not Found / Role not found", response = ErrorDetail.class),
+            @ApiResponse(code = 500, message = "Error Creating User access permission", response = ErrorDetail.class)
+    } )
+
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/user/{userid}/role/{roleid}")
     public ResponseEntity<?> postUserRoleByIds(HttpServletRequest request,

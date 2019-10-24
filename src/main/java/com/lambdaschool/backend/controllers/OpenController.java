@@ -1,11 +1,11 @@
 package com.lambdaschool.backend.controllers;
 
 import com.lambdaschool.backend.logging.Loggable;
-import com.lambdaschool.backend.models.User;
-import com.lambdaschool.backend.models.UserMinimum;
-import com.lambdaschool.backend.models.UserRoles;
+import com.lambdaschool.backend.models.*;
 import com.lambdaschool.backend.services.RoleService;
 import com.lambdaschool.backend.services.UserService;
+import io.swagger.annotations.*;
+import io.swagger.models.HttpMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +24,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+@ApiModel(value = "Signup", description = "User creation + auto sign in")
 @Loggable
 @RestController
 public class OpenController
@@ -47,6 +48,13 @@ public class OpenController
 //         "primaryemail" : "home@local.house"
 //     }
 
+    @ApiModelProperty()
+    @ApiOperation(value = "Creates New User and Logs them in automatically.", response = void.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Created User!", response = void.class),
+            @ApiResponse(code = 500, message = "Error creating User", response = ErrorDetail.class)
+    } )
+
     @PostMapping(value = "/createnewuser",
                  consumes = {"application/json"},
                  produces = {"application/json"})
@@ -61,6 +69,8 @@ public class OpenController
                                        .toUpperCase() + " " + httpServletRequest.getRequestURI() + " accessed");
 
         // Create the user
+
+
         User newuser = new User();
 
         newuser.setUsername(newminuser.getUsername());
@@ -76,7 +86,8 @@ public class OpenController
 
         // set the location header for the newly created resource - to another controller!
         HttpHeaders responseHeaders = new HttpHeaders();
-        URI newUserURI = ServletUriComponentsBuilder.fromUriString(httpServletRequest.getServerName() + ":" + httpServletRequest.getLocalPort() + "/users/user/{userId}")
+        URI newUserURI =
+                ServletUriComponentsBuilder.fromUriString(httpServletRequest.getServerName() + ":" + httpServletRequest.getLocalPort() + getPort(httpServletRequest) + "/users/user/{userId}")
                                                     .buildAndExpand(newuser.getUserid())
                                                     .toUri();
         responseHeaders.setLocation(newUserURI);
@@ -86,7 +97,7 @@ public class OpenController
         {
             // return the access token
             RestTemplate restTemplate = new RestTemplate();
-            String requestURI = "http://" + httpServletRequest.getServerName() + ":" + httpServletRequest.getLocalPort() + "/login";
+            String requestURI = "http://" + httpServletRequest.getServerName() + getPort(httpServletRequest) + "/login";
 
             List<MediaType> acceptableMediaTypes = new ArrayList<>();
             acceptableMediaTypes.add(MediaType.APPLICATION_JSON);
@@ -127,5 +138,14 @@ public class OpenController
     void returnNoFavicon()
     {
         logger.trace("favicon.ico endpoint accessed!");
+    }
+
+    private String getPort(HttpServletRequest httpServletRequest){
+        if(httpServletRequest.getServerName().equals("localhost"))
+        {
+            return ":" + httpServletRequest.getLocalPort();
+        } else {
+            return "";
+        }
     }
 }
