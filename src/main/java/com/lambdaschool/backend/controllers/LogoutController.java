@@ -1,6 +1,10 @@
 package com.lambdaschool.backend.controllers;
 
 import com.lambdaschool.backend.logging.Loggable;
+import com.lambdaschool.backend.models.Incident;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,11 @@ public class LogoutController
     private static final Logger logger = LoggerFactory.getLogger(LogoutController.class);
     @Autowired
     private TokenStore tokenStore;
+
+
+    @ApiOperation(value = "Logs out user.", response = void.class)
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Logged out - See you Later!", response =
+            Incident.class)})
 
     @RequestMapping(value = {"/oauth/revoke-token", "/logout"},
                     method = RequestMethod.GET)

@@ -61,6 +61,7 @@ public class DataSourceConfig
                 System.exit(exitCode);
             }
 
+//            myUrlString = "jdbc:postgresql://localhost:5432/flamingo";
             myUrlString = "jdbc:postgresql://" + System.getenv("MYDBHOST") + ":5432/" + System.getenv("MYDBNAME");
             myDriverClass = "org.postgresql.Driver";
             myDBUser = System.getenv("MYDBUSER");

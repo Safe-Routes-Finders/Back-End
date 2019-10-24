@@ -54,6 +54,10 @@ public class User extends Auditable
     @JsonIgnoreProperties("user")
     private List<Useremail> useremails = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "users")
+    @JsonIgnoreProperties("users")
+    private List<Incident> incidents = new ArrayList<>();
+
     public User()
     {
     }
@@ -151,6 +155,7 @@ public class User extends Auditable
         this.useremails = useremails;
     }
 
+
     @JsonIgnore
     public List<SimpleGrantedAuthority> getAuthority()
     {
@@ -168,8 +173,14 @@ public class User extends Auditable
     }
 
     @Override
-    public String toString()
-    {
-        return "User{" + "userid=" + userid + ", username='" + username + '\'' + ", password='" + password + '\'' + ", primaryEmail='" + primaryemail + '\'' + ", userroles=" + userroles + ", useremails=" + useremails + '}';
+    public String toString() {
+        return "User{" +
+                "userid=" + userid +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", primaryemail='" + primaryemail + '\'' +
+                ", userroles=" + userroles +
+                ", useremails=" + useremails +
+                '}';
     }
 }

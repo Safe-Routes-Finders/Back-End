@@ -1,8 +1,13 @@
 package com.lambdaschool.backend.controllers;
 
 import com.lambdaschool.backend.logging.Loggable;
+import com.lambdaschool.backend.models.ErrorDetail;
 import com.lambdaschool.backend.models.Role;
+import com.lambdaschool.backend.models.User;
 import com.lambdaschool.backend.services.RoleService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +33,12 @@ public class RolesController
     RoleService roleService;
 
     // http://localhost:2019/roles/roles
+
+    @ApiOperation(value = "Returns all Role Types",
+            response = User.class,
+            responseContainer = "List")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Returning Role Types", response = User.class)})
+
     @GetMapping(value = "/roles",
                 produces = {"application/json"})
     public ResponseEntity<?> listRoles(HttpServletRequest request)
@@ -41,6 +52,13 @@ public class RolesController
     }
 
     // http://localhost:2019/roles/role/3
+
+    @ApiOperation(value = "Deletes a role type by roleID.", response = void.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Role Type Removed!", response = void.class),
+            @ApiResponse(code = 404, message = "Role Type Not Found", response = ErrorDetail.class)
+    } )
+
     @GetMapping(value = "/role/{roleId}",
                 produces = {"application/json"})
     public ResponseEntity<?> getRoleById(HttpServletRequest request,
@@ -56,6 +74,14 @@ public class RolesController
     }
 
     // http://localhost:2019/roles/role/name/data
+
+    @ApiOperation(value = "Deletes a role type by RoleName.", response = void.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Role Type Removed!", response = ErrorDetail.class),
+            @ApiResponse(code = 404, message = "Role Name Not Found", response = ErrorDetail.class),
+            @ApiResponse(code = 401, message = "Sorry, You need the right authorization :)", response = ErrorDetail.class)
+    } )
+
     @GetMapping(value = "/role/name/{roleName}",
                 produces = {"application/json"})
     public ResponseEntity<?> getRoleByName(HttpServletRequest request,
@@ -74,6 +100,13 @@ public class RolesController
     //    {
     //        "name" : "ANewRole"
     //    }
+
+    @ApiOperation(value = "Creates a new role.", response = void.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Role Type Created!", response = ErrorDetail.class),
+            @ApiResponse(code = 401, message = "Sorry, You need the right authorization :)", response = ErrorDetail.class)
+    } )
+
     @PostMapping(value = "/role")
     public ResponseEntity<?> addNewRole(HttpServletRequest request,
                                         @Valid
@@ -103,6 +136,14 @@ public class RolesController
     //    {
     //        "name" : "ANewRole"
     //    }
+
+    @ApiOperation(value = "Creates a new role and assigns custom id.", response = void.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Role Type Created!", response = ErrorDetail.class),
+            @ApiResponse(code = 401, message = "Sorry, You need the right authorization. :)", response =
+                    ErrorDetail.class)
+    } )
+
     @PutMapping(value = "/role/{roleid}")
     public ResponseEntity<?> addNewRole(HttpServletRequest request,
                                         @PathVariable long roleid,
@@ -119,6 +160,18 @@ public class RolesController
 
 
     // localhost:2019/roles/role/3
+
+
+    @ApiOperation(value = "Deletes a role type by id.", response = ErrorDetail.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Role Type Deleted!", response = ErrorDetail.class),
+            @ApiResponse(code = 404, message = "Role Not Found.", response = ErrorDetail.class),
+            @ApiResponse(code = 401, message = "Sorry, You need the right authorization. :)", response =
+                    ErrorDetail.class)
+    } )
+
+
+
     @DeleteMapping("/role/{id}")
     public ResponseEntity<?> deleteRoleById(HttpServletRequest request,
                                             @PathVariable
