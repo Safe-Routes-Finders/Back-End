@@ -1,9 +1,7 @@
 package com.lambdaschool.backend;
 
-import com.lambdaschool.backend.models.Role;
-import com.lambdaschool.backend.models.User;
-import com.lambdaschool.backend.models.UserRoles;
-import com.lambdaschool.backend.models.Useremail;
+import com.lambdaschool.backend.models.*;
+import com.lambdaschool.backend.services.IncidentService;
 import com.lambdaschool.backend.services.RoleService;
 import com.lambdaschool.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +21,8 @@ public class SeedData implements CommandLineRunner
     @Autowired
     UserService userService;
 
+    @Autowired
+    IncidentService incidentService;
 
     @Override
     public void run(String[] args) throws Exception
@@ -85,5 +85,33 @@ public class SeedData implements CommandLineRunner
         System.out.println(u4);
         System.out.println(u5);
         System.out.println("*** Seed Data ***\n");
+
+
+//        Incident Seed Data //
+        ArrayList<Incident> incidents = new ArrayList<>();
+
+        Incident i1 = new Incident("(30.3427, -187.3258)", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 , 11, 12, 13, 14, 15 , 16,
+                                   17, 18, 19, 20, 21, 22, 23, 33.3427, 66.3427);
+        incidentService.saveIncident(i1);
+
+
+        Incident i2 = new Incident("(54.3427, -1837.3258)", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0, 0, 0, 0, 0 , 0,
+                                   0, 0, 0, 0, 0, 0, 0, 33.3427, 66.3427);
+        incidentService.saveIncident(i2);
+
+        Incident i3 = new Incident("(2.3427, -2.3258)", 1, 0, 1, 1, 1, 0, 0, 0, 1, 1 , 0, 0, 0, 0, 0 , 0,
+                                   0, 0, 0, 0, 0, 0, 0, 33.3427, 66.3427);
+        incidentService.saveIncident(i3);
+
+        Incident i4 = new Incident("(4.3427, -4.3258)", 1, 0, 1, 1, 1, 0, 0, 1, 1, 1 , 20, 0, 1, 0, 0 , 0,
+                                   0, 0, 0, 0, 1, 0, 0, 33.3427, 66.3427);
+        incidentService.saveIncident(i4);
+
+        System.out.println("*** INCIDENT SEED DATA ****");
+        System.out.println(i1);
+        System.out.println(i2);
+        System.out.println(i3);
+        System.out.println(i4);
+        System.out.println("*** INCIDENT SEED DATA ***");
     }
 }

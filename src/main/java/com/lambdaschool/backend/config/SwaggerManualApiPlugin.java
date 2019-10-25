@@ -53,7 +53,7 @@ public class SwaggerManualApiPlugin implements ApiListingScannerPlugin
                                                                                                                   .responseMessages(responseMessages())
                                                                                                                   .parameters(Arrays.asList(new ParameterBuilder().description("Login Parameter")
                                                                                                                                                                   .type(new TypeResolver().resolve(UserLogin.class))
-                                                                                                                                                                  .name("userLogin")
+                                                                                                                                                                  .name("UserLogin")
                                                                                                                                                                   .parameterType("body")
                                                                                                                                                                   .parameterAccess("access")
                                                                                                                                                                   .required(true)
