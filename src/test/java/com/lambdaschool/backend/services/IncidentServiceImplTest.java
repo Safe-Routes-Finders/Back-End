@@ -37,18 +37,18 @@ public class IncidentServiceImplTest {
     }
 
     @Test
-    public void findAll()
+    public void A_findAll()
     {
         assertEquals(4, incidentService.findAll(Pageable.unpaged()).size());
     }
 
     @Test
-    public void topIncident() {
-        assertEquals(4, incidentService.topIncident().size());
+    public void B_topIncident() {
+        assertEquals(20, incidentService.topIncident().iterator().next().getAll_years());
     }
 
     @Test
-    public void saveIncident()
+    public void C_saveIncident()
     {
         ArrayList<Incident> datas = new ArrayList<>();
         Incident i7 = new Incident("(9.3427, -4.3258)", 9, 9, 9, 9, 1, 0, 0, 1, 1, 1 , 20, 0, 1, 0, 0 , 0,
