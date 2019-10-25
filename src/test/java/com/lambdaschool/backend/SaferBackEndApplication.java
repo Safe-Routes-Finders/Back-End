@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc
 // @EnableJpaAuditing
 @SpringBootApplication
-public class StartHereApplication
+public class SaferBackEndApplication
 {
     private static final Logger logger = LoggerFactory.getLogger(com.lambdaschool.backend.SaferBackEndApplication.class);
     private static boolean stop = false;
